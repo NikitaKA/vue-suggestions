@@ -56,7 +56,7 @@
         this.callbacks.add(this.onSelect);
         this.callbacks.add(this.options.onSelect || $.noop)
         const options = Object.assign({}, this.options, {
-          onSelect: suggestion => this.callbacks.fire(suggestion)
+          onSelect: suggestion => this.callbacks.fire({component: this, suggestion})
         });
         $(this.$el).suggestions(options);
       },
@@ -64,9 +64,9 @@
         const plugin = $(this.$el).suggestions();
         plugin.dispose();
       },
-      onSelect(suggestion) {
-        this.value = suggestion.value;
+      onSelect({suggestion}) {
         const { geo_lat, geo_lon } = suggestion.data;
+        this.value = suggestion.value;
         this.coords.latitude = geo_lat;
         this.coords.longitude = geo_lon;
       }
